@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Widget Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .hero {
+            background-color: #25D366;
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: white;
+            color: #25D366;
+            border: 2px solid white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background-color: transparent;
+            color: white;
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: white;
+        }
+        .btn-outline:hover {
+            background-color: white;
+            color: #25D366;
+        }
+        .btn-primary {
+            background-color: #25D366;
+            color: white;
+            border: 2px solid #25D366;
+        }
+        .btn-primary:hover {
+            background-color: #128C7E;
+            border-color: #128C7E;
+            color: white;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 40px 0;
+        }
+        .feature {
+            flex-basis: calc(33.333% - 20px);
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .feature h3 {
+            color: #25D366;
+            margin-top: 0;
+        }
+        .how-it-works {
+            background-color: #f5f5f5;
+            padding: 60px 0;
+        }
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        .step {
+            flex-basis: calc(25% - 20px);
+            text-align: center;
+            position: relative;
+        }
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 50%;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .step:not(:last-child):after {
+            content: "";
+            position: absolute;
+            top: 20px;
+            right: -10%;
+            width: 20%;
+            height: 2px;
+            background-color: #ddd;
+        }
+        .cta {
+            text-align: center;
+            padding: 60px 0;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        @media (max-width: 768px) {
+            .feature {
+                flex-basis: 100%;
+            }
+            .step {
+                flex-basis: 100%;
+                margin-bottom: 30px;
+            }
+            .step:not(:last-child):after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>WhatsApp Widget Service</h1>
+        <p>Add a customizable WhatsApp chat button to your website in minutes. Connect with your customers directly through WhatsApp.</p>
+        <a href="/dashboard.html" class="btn">Get Started</a>
+        <a href="/test.html" class="btn btn-outline">Try Demo</a>
+    </div>
+    
+    <div class="container">
+        <h2>Why Choose Our WhatsApp Widget?</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>Easy Integration</h3>
+                <p>Simply copy and paste our code snippet into your website. No coding skills required.</p>
+            </div>
+            <div class="feature">
+                <h3>Fully Customizable</h3>
+                <p>Change colors, position, text, and more to match your brand and website design.</p>
+            </div>
+            <div class="feature">
+                <h3>Analytics Tracking</h3>
+                <p>Track views and clicks to measure engagement and optimize your customer communication.</p>
+            </div>
+            <div class="feature">
+                <h3>Domain Control</h3>
+                <p>Specify which domains can use your widget for enhanced security.</p>
+            </div>
+            <div class="feature">
+                <h3>Pre-filled Messages</h3>
+                <p>Set default messages to make it easier for customers to start a conversation.</p>
+            </div>
+            <div class="feature">
+                <h3>Mobile Friendly</h3>
+                <p>Works perfectly on all devices, including smartphones and tablets.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Create Account</h3>
+                    <p>Sign up for a free account on our dashboard.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Configure Widget</h3>
+                    <p>Customize your WhatsApp button to match your brand.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Get Code</h3>
+                    <p>Copy the generated code snippet for your widget.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Add to Website</h3>
+                    <p>Paste the code into your website and you're done!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="cta">
+        <h2>Ready to Connect with Your Customers?</h2>
+        <p>Start using our WhatsApp Widget today and improve your customer communication.</p>
+        <a href="/dashboard.html" class="btn btn-primary">Get Started Now</a>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 WhatsApp Widget Service. All rights reserved.</p>
+    </footer>
+</body>
+</html>

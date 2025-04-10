@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Widget Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #25D366;
+            margin-bottom: 20px;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: monospace;
+            margin-bottom: 20px;
+        }
+        .test-form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #128C7E;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>WhatsApp Widget Test Page</h1>
+        
+        <p>This page allows you to test the WhatsApp widget with different configurations.</p>
+        
+        <div class="test-form">
+            <h2>Configure Widget</h2>
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp Number (with country code, no spaces or symbols)</label>
+                <input type="text" id="whatsapp" value="15593633137" placeholder="e.g., 15551234567">
+            </div>
+            
+            <div class="form-group">
+                <label for="call_to_action">Call to Action Text</label>
+                <input type="text" id="call_to_action" value="Connect" placeholder="e.g., Chat with us">
+            </div>
+            
+            <div class="form-group">
+                <label for="button_color">Button Color</label>
+                <input type="color" id="button_color" value="#25D366">
+            </div>
+            
+            <div class="form-group">
+                <label for="position">Position</label>
+                <select id="position">
+                    <option value="right">Right</option>
+                    <option value="left">Left</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="pre_filled_message">Pre-filled Message</label>
+                <input type="text" id="pre_filled_message" value="Hola, necesito información acerca de los productos" placeholder="e.g., Hello, I have a question">
+            </div>
+            
+            <button id="apply-button">Apply Configuration</button>
+        </div>
+        
+        <h2>Generated Code</h2>
+        <div class="code-block" id="code-output">
+            <!-- Code will be displayed here -->
+        </div>
+        
+        <p>The widget should appear in the bottom corner of this page. Click it to test the WhatsApp integration.</p>
+    </div>
+
+    <script src="/widget.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Default configuration
+            var config = {
+                widgetId: 'test123',
+                whatsapp: '15593633137',
+                call_to_action: 'Connect',
+                button_color: '#25D366',
+                position: 'right',
+                pre_filled_message: 'Hola, necesito información acerca de los productos'
+            };
+            
+            // Initialize widget with default config
+            WhWidgetSendButton.init(config.widgetId, config);
+            
+            // Update code display
+            updateCodeDisplay();
+            
+            // Apply button click handler
+            document.getElementById('apply-button').addEventListener('click', function() {
+                // Remove existing widget
+                var existingWidget = document.querySelector('.wa-widget-send-button');
+                if (existingWidget) {
+                    existingWidget.remove();
+                }
+                
+                // Get updated configuration
+                config.whatsapp = document.getElementById('whatsapp').value;
+                config.call_to_action = document.getElementById('call_to_action').value;
+                config.button_color = document.getElementById('button_color').value;
+                config.position = document.getElementById('position').value;
+                config.pre_filled_message = document.getElementById('pre_filled_message').value;
+                
+                // Re-initialize widget with new config
+                WhWidgetSendButton.init(config.widgetId, config);
+                
+                // Update code display
+                updateCodeDisplay();
+            });
+            
+            function updateCodeDisplay() {
+                var codeOutput = document.getElementById('code-output');
+                var code = [
+                    '<!-- WhatsApp Widget Button -->',
+                    '<script type="text/javascript">',
+                    '    (function () {',
+                    '        var options = {',
+                    '            whatsapp: "' + config.whatsapp + '", // WhatsApp number',
+                    '            call_to_action: "' + config.call_to_action + '", // Call to action',
+                    '            button_color: "' + config.button_color + '", // Color of button',
+                    '            position: "' + config.position + '", // Position may be \'right\' or \'left\'',
+                    '            pre_filled_message: "' + config.pre_filled_message + '", // WhatsApp pre-filled message',
+                    '        };',
+                    '        var proto = document.location.protocol, host = "your-domain.com", url = proto + "//static." + host;',
+                    '        var s = document.createElement(\'script\'); s.type = \'text/javascript\'; s.async = true; s.src = url + \'/widget.js\';',
+                    '        s.onload = function () { WhWidgetSendButton.init(host, proto, options); };',
+                    '        var x = document.getElementsByTagName(\'script\')[0]; x.parentNode.insertBefore(s, x);',
+                    '    })();',
+                    '<\/script>',
+                    '<!-- /WhatsApp Widget Button -->'
+                ].join('\n');
+                
+                codeOutput.textContent = code;
+            }
+        });
+    </script>
+</body>
+</html>

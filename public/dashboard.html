@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Widget Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #25D366;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .user-info {
+            float: right;
+        }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .card {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background-color: #128C7E;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f8f9fa;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .color-preview {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: monospace;
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background-color: #f8f9fa;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        .tab.active {
+            background-color: white;
+            border-bottom: 1px solid white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header class="clearfix">
+        <div class="user-info">
+            <span id="user-name">Guest</span>
+            <button id="logout-btn" class="btn btn-secondary">Logout</button>
+        </div>
+        <h1>WhatsApp Widget Dashboard</h1>
+    </header>
+    
+    <div class="container">
+        <div id="login-section" class="card">
+            <h2>Login</h2>
+            <div id="login-alert" class="alert alert-danger hidden"></div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
+            </form>
+        </div>
+        
+        <div id="register-section" class="card hidden">
+            <h2>Register</h2>
+            <div id="register-alert" class="alert alert-danger hidden"></div>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Name</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" required minlength="6">
+                </div>
+                <button type="submit" class="btn">Register</button>
+                <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+            </form>
+        </div>
+        
+        <div id="dashboard-section" class="hidden">
+            <div class="tabs">
+                <div class="tab active" data-tab="widgets">My Widgets</div>
+                <div class="tab" data-tab="create">Create Widget</div>
+            </div>
+            
+            <div id="widgets-tab" class="tab-content active">
+                <div class="card">
+                    <h2>My Widgets</h2>
+                    <div id="widgets-alert" class="alert hidden"></div>
+                    <table id="widgets-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>WhatsApp</th>
+                                <th>Position</th>
+                                <th>Views</th>
+                                <th>Clicks</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="widgets-list">
+                            <!-- Widgets will be listed here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="create-tab" class="tab-content">
+                <div class="card">
+                    <h2>Create New Widget</h2>
+                    <div id="create-alert" class="alert hidden"></div>
+                    <form id="widget-form">
+                        <div class="form-group">
+                            <label for="widget-name">Widget Name</label>
+                            <input type="text" id="widget-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="widget-whatsapp">WhatsApp Number (with country code, no spaces or symbols)</label>
+                            <input type="text" id="widget-whatsapp" required placeholder="e.g., 15551234567">
+                        </div>
+                        <div class="form-group">
+                            <label for="widget-call-to-action">Call to Action Text</label>
+                            <input type="text" id="widget-call-to-action" value="Connect" placeholder="e.g., Chat with us">
+                        </div>
+                        <div class="form-group">
+                            <label for="widget-button-color">Button Color</label>
+                            <input type="color" id="widget-button-color" value="#25D366">
+                        </div>
+                        <div class="form-group">
+                            <label for="widget-position">Position</label>
+                            <select id="widget-position">
+                                <option value="right">Right</option>
+                                <option value="left">Left</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="widget-pre-filled-message">Pre-filled Message</label>
+                            <textarea id="widget-pre-filled-message" rows="3" placeholder="e.g., Hello, I have a question"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="widget-domains">Allowed Domains (comma separated, use * for all domains)</label>
+                            <input type="text" id="widget-domains" value="*" placeholder="e.g., example.com,mysite.com">
+                        </div>
+                        <button type="submit" class="btn">Create Widget</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="edit-section" class="hidden">
+                <div class="card">
+                    <h2>Edit Widget</h2>
+                    <div id="edit-alert" class="alert hidden"></div>
+                    <form id="edit-form">
+                        <input type="hidden" id="edit-id">
+                        <div class="form-group">
+                            <label for="edit-name">Widget Name</label>
+                            <input type="text" id="edit-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-whatsapp">WhatsApp Number (with country code, no spaces or symbols)</label>
+                            <input type="text" id="edit-whatsapp" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-call-to-action">Call to Action Text</label>
+                            <input type="text" id="edit-call-to-action">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-button-color">Button Color</label>
+                            <input type="color" id="edit-button-color">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-position">Position</label>
+                            <select id="edit-position">
+                                <option value="right">Right</option>
+                                <option value="left">Left</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-pre-filled-message">Pre-filled Message</label>
+                            <textarea id="edit-pre-filled-message" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-domains">Allowed Domains (comma separated, use * for all domains)</label>
+                            <input type="text" id="edit-domains">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-active">Active</label>
+                            <select id="edit-active">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn">Update Widget</button>
+                        <button type="button" id="cancel-edit" class="btn btn-secondary">Cancel</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="code-section" class="hidden">
+                <div class="card">
+                    <h2>Widget Code</h2>
+                    <p>Copy and paste this code into your website to display the WhatsApp widget:</p>
+                    <div class="code-block" id="widget-code"></div>
+                    <button id="copy-code" class="btn">Copy Code</button>
+                    <button id="close-code" class="btn btn-secondary">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/widget-generator.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const loginSection = document.getElementById('login-section');
+            const registerSection = document.getElementById('register-section');
+            const dashboardSection = document.getElementById('dashboard-section');
+            const editSection = document.getElementById('edit-section');
+            const codeSection = document.getElementById('code-section');
+            const widgetsTab = document.getElementById('widgets-tab');
+            const createTab = document.getElementById('create-tab');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const widgetForm = document.getElementById('widget-form');
+            const editForm = document.getElementById('edit-form');
+            const widgetsList = document.getElementById('widgets-list');
+            const userName = document.getElementById('user-name');
+            const logoutBtn = document.getElementById('logout-btn');
+            const showRegister = document.getElementById('show-register');
+            const showLogin = document.getElementById('show-login');
+            const tabs = document.querySelectorAll('.tab');
+            const cancelEdit = document.getElementById('cancel-edit');
+            const closeCode = document.getElementById('close-code');
+            const copyCode = document.getElementById('copy-code');
+            
+            // State
+            let token = localStorage.getItem('token');
+            let user = JSON.parse(localStorage.getItem('user'));
+            let widgets = [];
+            let currentWidget = null;
+            
+            // Check if user is logged in
+            if (token && user) {
+                showDashboard();
+                loadWidgets();
+                userName.textContent = user.name;
+            } else {
+                showLogin();
+            }
+            
+            // Event Listeners
+            loginForm.addEventListener('submit', handleLogin);
+            registerForm.addEventListener('submit', handleRegister);
+            widgetForm.addEventListener('submit', handleCreateWidget);
+            editForm.addEventListener('submit', handleUpdateWidget);
+            logoutBtn.addEventListener('click', handleLogout);
+            showRegister.addEventListener('click', showRegisterForm);
+            showLogin.addEventListener('click', showLoginForm);
+            cancelEdit.addEventListener('click', hideEditForm);
+            closeCode.addEventListener('click', hideCodeSection);
+            copyCode.addEventListener('click', copyWidgetCode);
+            
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(tabName + '-tab').classList.add('active');
+                });
+            });
+            
+            // Functions
+            function showLogin() {
+                loginSection.classList.remove('hidden');
+                registerSection.classList.add('hidden');
+                dashboardSection.classList.add('hidden');
+            }
+            
+            function showRegisterForm(e) {
+                e.preventDefault();
+                loginSection.classList.add('hidden');
+                registerSection.classList.remove('hidden');
+            }
+            
+            function showLoginForm(e) {
+                e.preventDefault();
+                loginSection.classList.remove('hidden');
+                registerSection.classList.add('hidden');
+            }
+            
+            function showDashboard() {
+                loginSection.classList.add('hidden');
+                registerSection.classList.add('hidden');
+                dashboardSection.classList.remove('hidden');
+                editSection.classList.add('hidden');
+                codeSection.classList.add('hidden');
+            }
+            
+            function showEditForm(widget) {
+                currentWidget = widget;
+                
+                // Fill form with widget data
+                document.getElementById('edit-id').value = widget._id;
+                document.getElementById('edit-name').value = widget.name;
+                document.getElementById('edit-whatsapp').value = widget.whatsapp;
+                document.getElementById('edit-call-to-action').value = widget.call_to_action;
+                document.getElementById('edit-button-color').value = widget.button_color;
+                document.getElementById('edit-position').value = widget.position;
+                document.getElementById('edit-pre-filled-message').value = widget.pre_filled_message;
+                document.getElementById('edit-domains').value = widget.domains.join(',');
+                document.getElementById('edit-active').value = widget.active.toString();
+                
+                // Show edit form
+                widgetsTab.classList.remove('active');
+                createTab.classList.remove('active');
+                editSection.classList.remove('hidden');
+            }
+            
+            function hideEditForm() {
+                editSection.classList.add('hidden');
+                widgetsTab.classList.add('active');
+            }
+            
+            function showCodeSection(widget) {
+                // Generate widget code
+                const code = WidgetCodeGenerator.generateCode(widget);
+                document.getElementById('widget-code').textContent = code;
+                
+                // Show code section
+                codeSection.classList.remove('hidden');
+            }
+            
+            function hideCodeSection() {
+                codeSection.classList.add('hidden');
+            }
+            
+            function copyWidgetCode() {
+                const codeElement = document.getElementById('widget-code');
+                const range = document.createRange();
+                range.selectNode(codeElement);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                document.execCommand('copy');
+                window.getSelection().removeAllRanges();
+                
+                // Show success message
+                alert('Code copied to clipboard!');
+            }
+            
+            async function handleLogin(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                try {
+                    const response = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Login failed');
+                    }
+                    
+                    // Save token and user data
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    token = data.token;
+                    user = data.user;
+                    
+                    // Update UI
+                    userName.textContent = user.name;
+                    showDashboard();
+                    loadWidgets();
+                    
+                    // Clear form
+                    loginForm.reset();
+                    
+                } catch (error) {
+                    const alertElement = document.getElementById('login-alert');
+                    alertElement.textContent = error.message;
+                    alertElement.classList.remove('hidden');
+                }
+            }
+            
+            async function handleRegister(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('register-name').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                
+                try {
+                    const response = await fetch('/api/auth/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name, email, password })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Registration failed');
+                    }
+                    
+                    // Save token and user data
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    token = data.token;
+                    user = data.user;
+                    
+                    // Update UI
+                    userName.textContent = user.name;
+                    showDashboard();
+                    
+                    // Clear form
+                    registerForm.reset();
+                    
+                } catch (error) {
+                    const alertElement = document.getElementById('register-alert');
+                    alertElement.textContent = error.message;
+                    alertElement.classList.remove('hidden');
+                }
+            }
+            
+            function handleLogout() {
+                // Clear local storage
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                
+                // Reset state
+                token = null;
+                user = null;
+                widgets = [];
+                
+                // Update UI
+                showLogin();
+            }
+            
+            async function loadWidgets() {
+                try {
+                    const response = await fetch('/api/widgets', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Failed to load widgets');
+                    }
+                    
+                    widgets = data.data;
+                    renderWidgets();
+                    
+                } catch (error) {
+                    const alertElement = document.getElementById('widgets-alert');
+                    alertElement.textContent = error.message;
+                    alertElement.classList.add('alert-danger');
+                    alertElement.classList.remove('hidden');
+                }
+            }
+            
+            function renderWidgets() {
+                widgetsList.innerHTML = '';
+                
+                if (widgets.length === 0) {
+                    widgetsList.innerHTML = '<tr><td colspan="6">No widgets found. Create your first widget!</td></tr>';
+                    return;
+                }
+                
+                widgets.forEach(widget => {
+                    const row = document.createElement('tr');
+                    
+                    row.innerHTML = `
+                        <td>${widget.name}</td>
+                        <td>${widget.whatsapp}</td>
+                        <td>${widget.position}</td>
+                        <td>${widget.analytics.views}</td>
+                        <td>${widget.analytics.clicks}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm edit-widget" data-id="${widget._id}">Edit</button>
+                            <button class="btn btn-secondary btn-sm get-code" data-id="${widget._id}">Get Code</button>
+                            <button class="btn btn-danger btn-sm delete-widget" data-id="${widget._id}">Delete</button>
+                        </td>
+                    `;
+                    
+                    widgetsList.appendChild(row);
+                });
+                
+                // Add event listeners to buttons
+                document.querySelectorAll('.edit-widget').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const widgetId = this.getAttribute('data-id');
+                        const widget = widgets.find(w => w._id === widgetId);
+                        showEditForm(widget);
+                    });
+                });
+                
+                document.querySelectorAll('.get-code').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const widgetId = this.getAttribute('data-id');
+                        const widget = widgets.find(w => w._id === widgetId);
+                        showCodeSection(widget);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-widget').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const widgetId = this.getAttribute('data-id');
+                        if (confirm('Are you sure you want to delete this widget?')) {
+                            deleteWidget(widgetId);
+                        }
+                    });
+                });
+            }
+            
+            async function handleCreateWidget(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('widget-name').value;
+                const whatsapp = document.getElementById('widget-whatsapp').value;
+                const call_to_action = document.getElementById('widget-call-to-action').value;
+                const button_color = document.getElementById('widget-button-color').value;
+                const position = document.getElementById('widget-position').value;
+                const pre_filled_message = document.getElementById('widget-pre-filled-message').value;
+                const domains = document.getElementById('widget-domains').value.split(',').map(d => d.trim());
+                
+                try {
+                    const response = await fetch('/api/widgets', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            name,
+                            whatsapp,
+                            call_to_action,
+                            button_color,
+                            position,
+                            pre_filled_message,
+                            domains
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Failed to create widget');
+                    }
+                    
+                    // Add new widget to list
+                    widgets.push(data.data);
+                    renderWidgets();
+                    
+                    // Show success message
+                    const alertElement = document.getElementById('create-alert');
+                    alertElement.textContent = 'Widget created successfully!';
+                    alertElement.classList.add('alert-success');
+                    alertElement.classList.remove('hidden');
+                    
+                    // Clear form
+                    widgetForm.reset();
+                    
+                    // Switch to widgets tab
+                    tabs[0].click();
+                    
+                    // Hide alert after 3 seconds
+                    setTimeout(() => {
+                        alertElement.classList.add('hidden');
+                    }, 3000);
+                    
+                } catch (error) {
+                    const alertElement = document.getElementById('create-alert');
+                    alertElement.textContent = error.message;
+                    alertElement.classList.add('alert-danger');
+                    alertElement.classList.remove('hidden');
+                }
+            }
+            
+            async function handleUpdateWidget(e) {
+                e.preventDefault();
+                
+                const id = document.getElementById('edit-id').value;
+                const name = document.getElementById('edit-name').value;
+                const whatsapp = document.getElementById('edit-whatsapp').value;
+                const call_to_action = document.getElementById('edit-call-to-action').value;
+                const button_color = document.getElementById('edit-button-color').value;
+                const position = document.getElementById('edit-position').value;
+                const pre_filled_message = document.getElementById('edit-pre-filled-message').value;
+                const domains = document.getElementById('edit-domains').value.split(',').map(d => d.trim());
+                const active = document.getElementById('edit-active').value === 'true';
+                
+                try {
+                    const response = await fetch(`/api/widgets/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            name,
+                            whatsapp,
+                            call_to_action,
+                            button_color,
+                            position,
+                            pre_filled_message,
+                            domains,
+                            active
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Failed to update widget');
+                    }
+                    
+                    // Update widget in list
+                    const index = widgets.findIndex(w => w._id === id);
+                    widgets[index] = data.data;
+                    renderWidgets();
+                    
+                    // Show success message
+                    const alertElement = document.getElementById('edit-alert');
+                    alertElement.textContent = 'Widget updated successfully!';
+                    alertElement.classList.add('alert-success');
+                    alertElement.classList.remove('hidden');
+                    
+                    // Hide alert after 3 seconds
+                    setTimeout(() => {
+                        alertElement.classList.add('hidden');
+                        hideEditForm();
+                    }, 2000);
+                    
+                } catch (error) {
+                    const alertElement = document.getElementById('edit-alert');
+                    alertElement.textContent = error.message;
+                    alertElement.classList.add('alert-danger');
+                    alertElement.classList.remove('hidden');
+                }
+            }
+            
+            async function deleteWidget(id) {
+                try {
+                    const response = await fetch(`/api/widgets/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Failed to delete widget');
+                    }
+                    
+                    // Remove widget from list
+                    widgets = widgets.filter(w => w._id !== id);
+                    renderWidgets();
+                    
+                    // Show success message
+                    const alertElement = document.getElementById('widgets-alert');
+                    alertElement.textContent = 'Widget deleted successfully!';
+                    alertElement.classList.add('alert-success');
+                    alertElement.classList.remove('hidden');
+                    
+                    // Hide alert after 3 seconds
+                    setTimeout(() => {
+                        alertElement.classList.add('hidden');
+                    }, 3000);
+                    
+                } catch (error) {
+                    const alertElement = document.getElementById('widgets-alert');
+                    alertElement.textContent = error.message;
+                    alertElement.classList.add('alert-danger');
+                    alertElement.classList.remove('hidden');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
