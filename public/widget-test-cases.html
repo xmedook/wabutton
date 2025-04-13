@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Widget Test Cases</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-case {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        .status {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .status.success {
+            background: #dff0d8;
+            color: #3c763d;
+        }
+        .status.error {
+            background: #f2dede;
+            color: #a94442;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        #testResults {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>WhatsApp Widget Test Cases</h1>
+    
+    <div class="test-case">
+        <h2>Test Case 1: Basic Implementation</h2>
+        <button onclick="runTest1()">Run Test</button>
+        <div id="test1Status" class="status"></div>
+        <pre id="test1Code"></pre>
+    </div>
+
+    <div class="test-case">
+        <h2>Test Case 2: Custom Colors and Position</h2>
+        <button onclick="runTest2()">Run Test</button>
+        <div id="test2Status" class="status"></div>
+        <pre id="test2Code"></pre>
+    </div>
+
+    <div class="test-case">
+        <h2>Test Case 3: Multiple Instances Test</h2>
+        <button onclick="runTest3()">Run Test</button>
+        <div id="test3Status" class="status"></div>
+        <pre id="test3Code"></pre>
+    </div>
+
+    <div class="test-case">
+        <h2>Test Case 4: Error Handling</h2>
+        <button onclick="runTest4()">Run Test</button>
+        <div id="test4Status" class="status"></div>
+        <pre id="test4Code"></pre>
+    </div>
+
+    <div id="testResults">
+        <h2>Test Results</h2>
+        <ul id="resultsList"></ul>
+    </div>
+
+    <script>
+        function updateStatus(testId, success, message) {
+            const status = document.getElementById(testId + 'Status');
+            status.className = 'status ' + (success ? 'success' : 'error');
+            status.textContent = message;
+            
+            const results = document.getElementById('resultsList');
+            const li = document.createElement('li');
+            li.textContent = `${testId}: ${message}`;
+            li.style.color = success ? '#3c763d' : '#a94442';
+            results.appendChild(li);
+        }
+
+        function removeExistingWidgets() {
+            const widgets = document.querySelectorAll('.wa-widget-send-button');
+            widgets.forEach(widget => widget.remove());
+        }
+
+        function runTest1() {
+            removeExistingWidgets();
+            try {
+                const options = {
+                    widgetId: '67f762a9cfb9a6321c0260fa',
+                    whatsapp: '15593633137',
+                    call_to_action: 'Basic Test',
+                    position: 'right'
+                };
+                WhWidgetSendButton.init(options.widgetId, options);
+                document.getElementById('test1Code').textContent = JSON.stringify(options, null, 2);
+                updateStatus('test1', true, 'Basic implementation successful');
+            } catch (error) {
+                updateStatus('test1', false, 'Error: ' + error.message);
+            }
+        }
+
+        function runTest2() {
+            removeExistingWidgets();
+            try {
+                const options = {
+                    widgetId: '67f762a9cfb9a6321c0260fa',
+                    whatsapp: '15593633137',
+                    call_to_action: 'Custom Style Test',
+                    button_color: '#FF5733',
+                    position: 'left'
+                };
+                WhWidgetSendButton.init(options.widgetId, options);
+                document.getElementById('test2Code').textContent = JSON.stringify(options, null, 2);
+                updateStatus('test2', true, 'Custom styling successful');
+            } catch (error) {
+                updateStatus('test2', false, 'Error: ' + error.message);
+            }
+        }
+
+        function runTest3() {
+            removeExistingWidgets();
+            try {
+                // This should fail gracefully as multiple instances aren't supported
+                const options1 = {
+                    widgetId: '67f762a9cfb9a6321c0260fa',
+                    whatsapp: '15593633137',
+                    position: 'right'
+                };
+                const options2 = {
+                    widgetId: '67f762a9cfb9a6321c0260fa',
+                    whatsapp: '15593633137',
+                    position: 'left'
+                };
+                WhWidgetSendButton.init(options1.widgetId, options1);
+                WhWidgetSendButton.init(options2.widgetId, options2);
+                document.getElementById('test3Code').textContent = 'Multiple instances test';
+                updateStatus('test3', true, 'Multiple instances handled correctly');
+            } catch (error) {
+                updateStatus('test3', false, 'Error: ' + error.message);
+            }
+        }
+
+        function runTest4() {
+            removeExistingWidgets();
+            try {
+                // Test with invalid options
+                const options = {
+                    widgetId: 'invalid-id',
+                    whatsapp: 'invalid-number',
+                    position: 'invalid-position'
+                };
+                WhWidgetSendButton.init(options.widgetId, options);
+                document.getElementById('test4Code').textContent = JSON.stringify(options, null, 2);
+                updateStatus('test4', true, 'Error handling successful');
+            } catch (error) {
+                updateStatus('test4', false, 'Error handling test: ' + error.message);
+            }
+        }
+    </script>
+    <script src="/widget.js"></script>
+</body>
+</html>
