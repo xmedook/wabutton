@@ -125,6 +125,50 @@ You can test the widget functionality at `http://localhost:5000/test.html`.
 
 - Run in development mode: `npm run dev`
 - Run in production mode: `npm start`
+- Test Plesk environment: `npm run test-plesk`
+
+## Deployment
+
+### Plesk Server Deployment
+
+This application is configured to run on a Plesk server with Node.js support. For detailed instructions on setting up the application in Plesk, please refer to the [PLESK-SETUP.md](PLESK-SETUP.md) file.
+
+Key points for Plesk deployment:
+
+1. Use `plesk-start.js` as the Application Startup File in Plesk Node.js settings
+2. Set the required environment variables in Plesk's "Custom environment variables" section
+3. The application uses PM2 for process management in production
+
+To set up the application for Plesk:
+
+```bash
+./setup-plesk.sh
+```
+
+This script will:
+- Verify that all required files exist
+- Create the logs directory
+- Make the restart script executable
+- Install dependencies
+- Test the Plesk environment
+
+To test the Plesk environment locally before deployment:
+
+```bash
+npm run test-plesk
+```
+
+This will simulate the Plesk environment variables and start the application using the same startup process that Plesk would use.
+
+To test web access to the application:
+
+```bash
+npm run test-web
+```
+
+This will make an HTTP request to the application URL to verify that it's accessible from the web.
+
+For a quick reference guide to Plesk configuration, see [PLESK-README.md](PLESK-README.md).
 
 ## License
 

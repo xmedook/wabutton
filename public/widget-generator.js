@@ -16,7 +16,6 @@
         throw new Error('Invalid widget configuration');
       }
 
-      var serverUrl = window.location.origin;
       var widgetId = widget._id;
       
       var code = [
@@ -31,7 +30,7 @@
         '            position: "' + widget.position + '", // Position may be \'right\' or \'left\'',
         '            pre_filled_message: "' + widget.pre_filled_message + '", // WhatsApp pre-filled message',
         '        };',
-        '        var proto = document.location.protocol, host = "' + serverUrl.replace(/^https?:\/\//, '') + '", url = proto + "//" + host;',
+        '        var proto = document.location.protocol, host = "wabutton.nexodigital.ai", url = proto + "//" + host;',
         '        var s = document.createElement(\'script\'); s.type = \'text/javascript\'; s.async = true; s.src = url + \'/widget.js\';',
         '        s.onload = function () { WhWidgetSendButton.init(options.widgetId, options); };',
         '        var x = document.getElementsByTagName(\'script\')[0]; x.parentNode.insertBefore(s, x);',

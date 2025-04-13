@@ -1,0 +1,7 @@
+#!/bin/bash
+export PORT=3000
+export MONGODB_URI="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority"
+export JWT_SECRET="your-secret-key-here"
+
+npm install
+node server.js

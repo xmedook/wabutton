@@ -118,7 +118,7 @@
     trackView: function() {
       if (!this.widgetId) return;
       
-      fetch('/api/widgets/' + this.widgetId + '/view')
+      fetch('https://wabutton.nexodigital.ai/api/widgets/' + this.widgetId + '/view')
         .catch(function(error) {
           console.error('Error tracking widget view:', error);
         });
@@ -128,7 +128,7 @@
     trackClick: function() {
       if (!this.widgetId) return;
       
-      fetch('/api/widgets/' + this.widgetId + '/click')
+      fetch('https://wabutton.nexodigital.ai/api/widgets/' + this.widgetId + '/click')
         .catch(function(error) {
           console.error('Error tracking widget click:', error);
         });

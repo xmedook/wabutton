@@ -1,1 +1,40 @@
-.env\n.env.*\nnode_modules/\n.node-version
+# Environment variables and secrets
+.env
+.env.backup
+.env.local
+.env.*.local
+
+# Configuration files that might contain secrets
+ecosystem.config.js
+ecosystem-monitor.config.js
+
+# Scripts that might contain credentials
+start.sh
+plesk-restart.sh
+setup-plesk.sh
+
+# Logs and runtime data
+logs/
+*.log
+.pm2/
+
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Runtime files
+.node-version
+.DS_Store
+
+# Local development files
+local.*
+*.local
+*.local.*
+
+# Backup files
+*.backup
+*~
+
+# Do not ignore template files
+!*.template
+!*.template.*

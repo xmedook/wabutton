@@ -117,7 +117,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Default configuration
             var config = {
-                widgetId: 'test123',
+                widgetId: '67f762a9cfb9a6321c0260fa',
                 whatsapp: '15593633137',
                 call_to_action: 'Connect',
                 button_color: '#25D366',
@@ -155,25 +155,7 @@
             
             function updateCodeDisplay() {
                 var codeOutput = document.getElementById('code-output');
-                var code = [
-                    '<!-- WhatsApp Widget Button -->',
-                    '<script type="text/javascript">',
-                    '    (function () {',
-                    '        var options = {',
-                    '            whatsapp: "' + config.whatsapp + '", // WhatsApp number',
-                    '            call_to_action: "' + config.call_to_action + '", // Call to action',
-                    '            button_color: "' + config.button_color + '", // Color of button',
-                    '            position: "' + config.position + '", // Position may be \'right\' or \'left\'',
-                    '            pre_filled_message: "' + config.pre_filled_message + '", // WhatsApp pre-filled message',
-                    '        };',
-                    '        var proto = document.location.protocol, host = "your-domain.com", url = proto + "//static." + host;',
-                    '        var s = document.createElement(\'script\'); s.type = \'text/javascript\'; s.async = true; s.src = url + \'/widget.js\';',
-                    '        s.onload = function () { WhWidgetSendButton.init(host, proto, options); };',
-                    '        var x = document.getElementsByTagName(\'script\')[0]; x.parentNode.insertBefore(s, x);',
-                    '    })();',
-                    '<\/script>',
-                    '<!-- /WhatsApp Widget Button -->'
-                ].join('\n');
+                var code = '<!-- WhatsApp Widget Button --><script type="text/javascript">(function(){var options={widgetId:"' + config.widgetId + '",whatsapp:"' + config.whatsapp + '",call_to_action:"' + config.call_to_action + '",button_color:"' + config.button_color + '",position:"' + config.position + '",pre_filled_message:"' + config.pre_filled_message + '"};var proto=document.location.protocol,host="wabutton.nexodigital.ai",url=proto+"//"+host;var s=document.createElement(\'script\');s.type=\'text/javascript\';s.async=true;s.src=url+\'/widget.js\';s.onload=function(){WhWidgetSendButton.init(options.widgetId,options);};var x=document.getElementsByTagName(\'script\')[0];x.parentNode.insertBefore(s,x);})();</' + 'script><!-- /WhatsApp Widget Button -->';
                 
                 codeOutput.textContent = code;
             }
